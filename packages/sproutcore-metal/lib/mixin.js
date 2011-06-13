@@ -281,24 +281,36 @@ SC.mixin = function(obj) {
 
 
 /**
-  @lends SC.Mixin
+  @ignore
+  @private
 */
 Mixin = function() { return initMixin(this, arguments); };
 
 /** @private */
 Mixin._apply = applyMixin;
 
+/**
+  @name SC.Mixin.applyPartial
+
+  @param {Object} obj
+*/
 Mixin.applyPartial = function(obj) {
   var args = Array.prototype.slice.call(arguments, 1);
   return applyMixin(obj, args, true);
 };
 
+/**
+  @name SC.Mixin.create
+*/
 Mixin.create = function() {
   classToString.processed = false;
   var M = this;
   return initMixin(new M(), arguments);
 };
 
+/**
+  @name SC.Mixin.reopen
+*/
 Mixin.prototype.reopen = function() {
   var mixin, tmp;
 
@@ -328,12 +340,18 @@ Mixin.prototype.reopen = function() {
 
 var TMP_ARRAY = [];
 
+/**
+  @name SC.Mixin#apply
+*/
 Mixin.prototype.apply = function(obj) {
   TMP_ARRAY.length = 0;
   TMP_ARRAY[0] = this;
   return applyMixin(obj, TMP_ARRAY, false);
 };
 
+/**
+  @name SC.Mixin#applyPartial
+*/
 Mixin.prototype.applyPartial = function(obj) {
   TMP_ARRAY.length = 0;
   TMP_ARRAY[0] = this;
@@ -357,6 +375,7 @@ function _detect(curMixin, targetMixin, seen) {
 }
 
 /**
+  @name SC.Mixin#detect
   @returns {Boolean} true if object has this SC.Mixin applied, false otherwise
 */
 Mixin.prototype.detect = function(obj) {
@@ -365,6 +384,9 @@ Mixin.prototype.detect = function(obj) {
   return !!meta(obj, false)[SC.guidFor(this)];
 };
 
+/**
+  @name SC.Mixin.without
+*/
 Mixin.prototype.without = function() {
   var ret = new Mixin(this);
   ret._without = Array.prototype.slice.call(arguments);
@@ -391,6 +413,7 @@ function _keys(ret, mixin, seen) {
 }
 
 /**
+  @name SC.Mixin#keys
   @returns {Array} An array of key names
 */
 Mixin.prototype.keys = function() {
@@ -443,12 +466,19 @@ classToString = function() {
   return this[NAME_KEY] || "(unknown mixin)";
 };
 
+/**
+  Outputs a nicely formatted string including the
+  mixin's name.
+
+  @name SC.Mixin#toString
+*/
 Mixin.prototype.toString = classToString;
 
 // TODO: Make SC.mixin
 /**
   Returns the mixins currently applied to the specified object
 
+  @name SC.Mixin.mixins
   @param {Object} obj The object to check
 */
 Mixin.mixins = function(obj) {
