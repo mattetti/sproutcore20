@@ -21,6 +21,7 @@ SC.platform.create = Object.create;
 
 //@if (legacy)
 if (!SC.platform.create) {
+  /** @private */
   var O_ctor = function() {}, 
       O_proto = O_ctor.prototype;
 
