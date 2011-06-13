@@ -180,11 +180,12 @@ var ChainNode = function(parent, key, value, separator) {
 };
 
 /**
-  @class
-  @name Wp
+  @ignore
+  @private
 */
 var Wp = ChainNode.prototype;
 
+/** @private */
 Wp.destroy = function() {
   if (this._watching) {
     var obj = this._object;
@@ -195,7 +196,11 @@ Wp.destroy = function() {
   }
 };
 
-// copies a top level object only
+/**
+  @private
+
+  Copies a top level object only
+*/
 Wp.copy = function(obj) {
   var ret = new ChainNode(null, null, obj, this._separator);
   var paths = this._paths, path;
@@ -207,8 +212,12 @@ Wp.copy = function(obj) {
   return ret;
 };
 
-// called on the root node of a chain to setup watchers on the specified 
-// path.
+/**
+  @private
+
+  Called on the root node of a chain to setup watchers on the specified 
+  path.
+*/
 Wp.add = function(path) {
   var obj, tuple, key, src, separator, paths;
 
@@ -237,8 +246,12 @@ Wp.add = function(path) {
   this.chain(key, path, src, separator);
 };
 
-// called on the root node of a chain to teardown watcher on the specified
-// path
+/**
+  @private
+
+  Called on the root node of a chain to teardown watcher on the specified
+  path
+*/
 Wp.remove = function(path) {
   var obj, tuple, key, src, paths;
 
@@ -262,6 +275,7 @@ Wp.remove = function(path) {
 
 Wp.count = 0;
 
+/** @private */
 Wp.chain = function(key, path, src, separator) {
   var chains = this._chains, node;
   if (!chains) { chains = this._chains = {}; }
@@ -280,6 +294,7 @@ Wp.chain = function(key, path, src, separator) {
   }
 };
 
+/** @private */
 Wp.unchain = function(key, path) {
   var chains = this._chains, node = chains[key];
 
@@ -298,6 +313,7 @@ Wp.unchain = function(key, path) {
   }
 };
 
+/** @private */
 Wp.willChange = function() {
   var chains = this._chains;
   if (chains) {
@@ -310,6 +326,7 @@ Wp.willChange = function() {
   if (this._parent) { this._parent.chainWillChange(this, this._key, 1); }
 };
 
+/** @private */
 Wp.chainWillChange = function(chain, path, depth) {
   if (this._key) { path = this._key + this._separator + path; }
   
@@ -322,6 +339,7 @@ Wp.chainWillChange = function(chain, path, depth) {
   }
 };
 
+/** @private */
 Wp.chainDidChange = function(chain, path, depth) {
   if (this._key) { path = this._key + this._separator + path; }
   if (this._parent) {
@@ -333,6 +351,7 @@ Wp.chainDidChange = function(chain, path, depth) {
   }
 };
 
+/** @private */
 Wp.didChange = function() {
   var obj, chains, key;
 
